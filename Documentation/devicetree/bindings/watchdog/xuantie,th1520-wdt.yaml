@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 %YAML 1.2
 ---
-$id: http://devicetree.org/schemas/watchdog/thead,th1520-wdt.yaml#
+$id: http://devicetree.org/schemas/watchdog/xuantie,th1520-wdt.yaml#
 $schema: http://devicetree.org/meta-schemas/core.yaml#
 
-title: THEAD PMIC Watchdog for TH1520 SoC
+title: XuanTie PMIC Watchdog for TH1520 SoC
 
 maintainers:
   - Wei.Liu <lw312886@linux.alibaba.com>
