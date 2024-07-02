@@ -308,7 +308,7 @@ static int th1520_aon_probe(struct platform_device *pdev)
 
 static const struct of_device_id th1520_aon_match[] = {
 	{
-		.compatible = "thead,th1520-aon",
+		.compatible = "xuantie,th1520-aon",
 	},
 	{ /* Sentinel */ }
 };
@@ -337,5 +337,5 @@ static struct platform_driver th1520_aon_driver = {
 builtin_platform_driver(th1520_aon_driver);
 
 MODULE_AUTHOR("fugang.duan <duanfugang.dfg@linux.alibaba.com>");
-MODULE_DESCRIPTION("Thead Light firmware protocol driver");
+MODULE_DESCRIPTION("XuanTie TH1520 firmware protocol driver");
 MODULE_LICENSE("GPL v2");
