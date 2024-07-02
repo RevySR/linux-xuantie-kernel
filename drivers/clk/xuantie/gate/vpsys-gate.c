@@ -95,5 +95,5 @@ static struct platform_driver xuantie_vpsys_clk_driver = {
 
 module_platform_driver(xuantie_vpsys_clk_driver);
 MODULE_AUTHOR("wei.liu <lw312886@linux.alibaba.com>");
-MODULE_DESCRIPTION("Thead Th1520 Fullmask vpsys clock gate provider");
+MODULE_DESCRIPTION("XuanTie Th1520 Fullmask vpsys clock gate provider");
 MODULE_LICENSE("GPL v2");

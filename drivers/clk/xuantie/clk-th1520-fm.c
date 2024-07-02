@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: GPL-2.0 */
+// SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) 2021 Alibaba Group Holding Limited.
  */
@@ -348,7 +348,7 @@ static int th1520_clocks_probe(struct platform_device *pdev)
 	int ret;
 	const bool *teesys = of_device_get_match_data(dev);
 
-	pr_info("th1520_clocks_probe !!! start !\n");
+	pr_info("%s !!! start !\n", __func__);
 
 	/* Clock source */
 	clks[CLK_DUMMY] = xuantie_clk_fixed("dummy", 0);
@@ -644,5 +644,5 @@ static struct platform_driver th1520_clk_driver = {
 
 module_platform_driver(th1520_clk_driver);
 MODULE_AUTHOR("wei.liu <lw312886@linux.alibaba.com>");
-MODULE_DESCRIPTION("Thead Th1520 Fullmask clock driver");
-MODULE_LICENSE("GPL v2");
+MODULE_DESCRIPTION("XuanTie Th1520 Fullmask clock driver");
+MODULE_LICENSE("GPL");

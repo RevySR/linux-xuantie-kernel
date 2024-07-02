@@ -206,6 +206,7 @@ static int th1520_dwmac_enable_clk(struct plat_stmmacenet_data *plat)
 
 	return 0;
 }
+
 static void th1520_dwmac_set_ptp_clk(struct plat_stmmacenet_data *plat_dat,unsigned int ptp_clk_rate)
 {
 	unsigned int div;
@@ -231,8 +232,7 @@ static void th1520_dwmac_set_ptp_clk(struct plat_stmmacenet_data *plat_dat,unsig
 	return ;
 }
 
-static int th1520_dwmac_init(struct platform_device *pdev,
-			    void *bsp_priv)
+static int th1520_dwmac_init(struct platform_device *pdev, void *bsp_priv)
 {
 	struct th1520_dwmac *dwmac = bsp_priv;
 	int ret;
@@ -415,7 +415,7 @@ static int th1520_dwmac_probe(struct platform_device *pdev)
 	plat->fix_mac_speed = th1520_dwmac_fix_speed;
 	plat->init = th1520_dwmac_init;
 
-	ret = th1520_dwmac_clk_enable(pdev,dwmac);
+	ret = th1520_dwmac_clk_enable(pdev, dwmac);
 	if (ret)
 		goto err_remove_config_dt;
 

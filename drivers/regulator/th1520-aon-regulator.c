@@ -766,5 +766,5 @@ module_exit(th1520_aon_regulator_exit);
 
 MODULE_AUTHOR("fugang.duan <duanfugang.dfg@linux.alibaba.com>");
 MODULE_AUTHOR("linghui.zlh <linghui.zlh@linux.alibaba.com>");
-MODULE_DESCRIPTION("Thead TH1520 Aon regulator virtual driver");
+MODULE_DESCRIPTION("XuanTie TH1520 Aon regulator virtual driver");
 MODULE_LICENSE("GPL");

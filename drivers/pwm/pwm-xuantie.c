@@ -266,4 +266,4 @@ module_platform_driver(xuantie_pwm_driver);
 MODULE_AUTHOR("Wei Liu <lw312886@linux.alibaba.com>");
 MODULE_AUTHOR("Jisheng Zhang <jszhang@kernel.org>");
 MODULE_DESCRIPTION("XuanTie pwm driver");
-MODULE_LICENSE("GPL v2");
+MODULE_LICENSE("GPL");

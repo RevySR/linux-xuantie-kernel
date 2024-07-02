@@ -120,5 +120,5 @@ static struct platform_driver th1520_audiosys_clk_driver = {
 
 module_platform_driver(th1520_audiosys_clk_driver);
 MODULE_AUTHOR("nanli.yd <nanli.yd@linux.alibaba.com>");
-MODULE_DESCRIPTION("Thead Th1520 Fullmask audiosys clock gate provider");
+MODULE_DESCRIPTION("XuanTie Th1520 Fullmask audiosys clock gate provider");
 MODULE_LICENSE("GPL v2");

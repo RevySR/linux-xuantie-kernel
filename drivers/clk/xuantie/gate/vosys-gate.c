@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: GPL-2.0 */
+// SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) 2022 Alibaba Group Holding Limited.
  */
@@ -107,5 +107,5 @@ static struct platform_driver xuantie_vosys_clk_driver = {
 
 module_platform_driver(xuantie_vosys_clk_driver);
 MODULE_AUTHOR("wei.liu <lw312886@linux.alibaba.com>");
-MODULE_DESCRIPTION("Thead Th1520 Fullmask vosys clock gate provider");
-MODULE_LICENSE("GPL v2");
+MODULE_DESCRIPTION("XuanTie Th1520 Fullmask vosys clock gate provider");
+MODULE_LICENSE("GPL");

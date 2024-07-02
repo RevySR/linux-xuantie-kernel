@@ -104,5 +104,5 @@ static struct platform_driver xuantie_miscsys_clk_driver = {
 module_platform_driver(xuantie_miscsys_clk_driver);
 MODULE_AUTHOR("wei.liu <lw312886@linux.alibaba.com>");
 MODULE_AUTHOR("Esther.Z <Esther.Z@linux.alibaba.com>");
-MODULE_DESCRIPTION("Thead th1520 Fullmask miscsys clock gate provider");
+MODULE_DESCRIPTION("XuanTie th1520 Fullmask miscsys clock gate provider");
 MODULE_LICENSE("GPL v2");
