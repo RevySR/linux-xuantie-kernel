@@ -565,7 +565,7 @@
 			snps,multicast-filter-bins = <64>;
 			snps,perfect-filter-entries = <32>;
 			snps,axi-config = <&stmmac_axi_config>;
-			xuantie,gmacapb = <&gmac0_apb>;
+			th1520,gmacapb = <&gmac0_apb>;
 			status = "disabled";
 
 			mdio0: mdio {
@@ -590,7 +590,7 @@
 			snps,multicast-filter-bins = <64>;
 			snps,perfect-filter-entries = <32>;
 			snps,axi-config = <&stmmac_axi_config>;
-			xuantie,gmacapb = <&gmac1_apb>;
+			th1520,gmacapb = <&gmac1_apb>;
 			status = "disabled";
 
 			mdio1: mdio {

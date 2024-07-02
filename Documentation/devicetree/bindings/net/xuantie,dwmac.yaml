@@ -4,7 +4,7 @@
 $id: http://devicetree.org/schemas/net/xuantie,dwmac.yaml#
 $schema: http://devicetree.org/meta-schemas/core.yaml#
 
-title: XuanTie DWMAC Ethernet controller
+title: XuanTie Th1520 DWMAC Ethernet controller
 
 maintainers:
   - Jisheng Zhang <jszhang@kernel.org>
@@ -28,7 +28,7 @@ properties:
   reg:
     maxItems: 1
 
-  xuantie,gmacapb:
+  th1520,gmacapb:
     $ref: /schemas/types.yaml#/definitions/phandle
     description:
       The phandle to the syscon node that control ethernet
@@ -42,7 +42,7 @@ required:
   - interrupts
   - interrupt-names
   - phy-mode
-  - xuantie,gmacapb
+  - th1520,gmacapb
 
 allOf:
   - $ref: snps,dwmac.yaml#
@@ -52,7 +52,7 @@ unevaluatedProperties: false
 examples:
   - |
     gmac0: ethernet@e7070000 {
-        compatible = "xuantie,th1520-dwmac", "snps,dwmac-3.70a";
+        compatible = "xuantie,th1520-dwmac";
         reg = <0xe7070000 0x2000>;
         clocks = <&clk 1>, <&clk 2>;
         clock-names = "stmmaceth", "pclk";
@@ -62,7 +62,7 @@ examples:
         snps,fixed-burst;
         snps,axi-config = <&stmmac_axi_setup>;
         snps,pbl = <32>;
-        xuantie,gmacapb = <&gmacapb_syscon>;
+        th1520,gmacapb = <&gmacapb_syscon>;
         phy-handle = <&phy0>;
 
         mdio {
