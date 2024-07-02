@@ -551,7 +551,7 @@
 		};
 
 		gmac0: ethernet@ffe7070000 {
-			compatible = "thead,th1520-dwmac";
+			compatible = "xuantie,th1520-dwmac";
 			reg = <0xff 0xe7070000 0x0 0x2000>;
 			interrupts = <66 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "macirq";
@@ -565,7 +565,7 @@
 			snps,multicast-filter-bins = <64>;
 			snps,perfect-filter-entries = <32>;
 			snps,axi-config = <&stmmac_axi_config>;
-			thead,gmacapb = <&gmac0_apb>;
+			xuantie,gmacapb = <&gmac0_apb>;
 			status = "disabled";
 
 			mdio0: mdio {
@@ -576,7 +576,7 @@
 		};
 
 		gmac1: ethernet@ffe7060000 {
-			compatible = "thead,th1520-dwmac";
+			compatible = "xuantie,th1520-dwmac";
 			reg = <0xff 0xe7060000 0x0 0x2000>;
 			interrupts = <67 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "macirq";
@@ -590,7 +590,7 @@
 			snps,multicast-filter-bins = <64>;
 			snps,perfect-filter-entries = <32>;
 			snps,axi-config = <&stmmac_axi_config>;
-			thead,gmacapb = <&gmac1_apb>;
+			xuantie,gmacapb = <&gmac1_apb>;
 			status = "disabled";
 
 			mdio1: mdio {

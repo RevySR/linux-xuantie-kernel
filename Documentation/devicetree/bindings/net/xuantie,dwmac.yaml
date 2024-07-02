@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 %YAML 1.2
 ---
-$id: http://devicetree.org/schemas/net/thead,dwmac.yaml#
+$id: http://devicetree.org/schemas/net/xuantie,dwmac.yaml#
 $schema: http://devicetree.org/meta-schemas/core.yaml#
 
-title: T-HEAD DWMAC Ethernet controller
+title: XuanTie DWMAC Ethernet controller
 
 maintainers:
   - Jisheng Zhang <jszhang@kernel.org>
@@ -14,7 +14,7 @@ select:
     compatible:
       contains:
         enum:
-          - thead,th1520-dwmac
+          - xuantie,th1520-dwmac
   required:
     - compatible
 
@@ -22,13 +22,13 @@ properties:
   compatible:
     items:
       - enum:
-          - thead,th1520-dwmac
+          - xuantie,th1520-dwmac
       - const: snps,dwmac-3.70a
 
   reg:
     maxItems: 1
 
-  thead,gmacapb:
+  xuantie,gmacapb:
     $ref: /schemas/types.yaml#/definitions/phandle
     description:
       The phandle to the syscon node that control ethernet
@@ -42,7 +42,7 @@ required:
   - interrupts
   - interrupt-names
   - phy-mode
-  - thead,gmacapb
+  - xuantie,gmacapb
 
 allOf:
   - $ref: snps,dwmac.yaml#
@@ -52,7 +52,7 @@ unevaluatedProperties: false
 examples:
   - |
     gmac0: ethernet@e7070000 {
-        compatible = "thead,th1520-dwmac", "snps,dwmac-3.70a";
+        compatible = "xuantie,th1520-dwmac", "snps,dwmac-3.70a";
         reg = <0xe7070000 0x2000>;
         clocks = <&clk 1>, <&clk 2>;
         clock-names = "stmmaceth", "pclk";
@@ -62,7 +62,7 @@ examples:
         snps,fixed-burst;
         snps,axi-config = <&stmmac_axi_setup>;
         snps,pbl = <32>;
-        thead,gmacapb = <&gmacapb_syscon>;
+        xuantie,gmacapb = <&gmacapb_syscon>;
         phy-handle = <&phy0>;
 
         mdio {

@@ -59,7 +59,7 @@
 #define GMAC_MII_RATE		25000000
 #define GMAC_PTP_CLK_RATE	50000000 //50MHz
 
-struct thead_dwmac {
+struct xuantie_dwmac {
 	struct plat_stmmacenet_data *plat;
 	struct regmap *apb_regmap;
 	struct device *dev;
@@ -71,9 +71,9 @@ struct thead_dwmac {
 
 #define  pm_debug dev_dbg	/* for suspend/resume interface debug info */
 
-static int thead_dwmac_set_phy_if(struct plat_stmmacenet_data *plat)
+static int xuantie_dwmac_set_phy_if(struct plat_stmmacenet_data *plat)
 {
-	struct thead_dwmac *dwmac = plat->bsp_priv;
+	struct xuantie_dwmac *dwmac = plat->bsp_priv;
 	u32 phyif;
 
 	switch (plat->mac_interface) {
@@ -97,9 +97,9 @@ static int thead_dwmac_set_phy_if(struct plat_stmmacenet_data *plat)
 	return 0;
 }
 
-static int thead_dwmac_set_txclk_dir(struct plat_stmmacenet_data *plat)
+static int xuantie_dwmac_set_txclk_dir(struct plat_stmmacenet_data *plat)
 {
-	struct thead_dwmac *dwmac = plat->bsp_priv;
+	struct xuantie_dwmac *dwmac = plat->bsp_priv;
 	u32 txclk_dir;
 
 	switch (plat->mac_interface) {
@@ -123,9 +123,9 @@ static int thead_dwmac_set_txclk_dir(struct plat_stmmacenet_data *plat)
 	return 0;
 }
 
-static void thead_dwmac_fix_speed(void *priv, unsigned int speed, unsigned int mode)
+static void xuantie_dwmac_fix_speed(void *priv, unsigned int speed, unsigned int mode)
 {
-	struct thead_dwmac *dwmac = priv;
+	struct xuantie_dwmac *dwmac = priv;
 	struct plat_stmmacenet_data *plat = dwmac->plat;
 	unsigned long rate;
 	u32 div;
@@ -175,9 +175,9 @@ static void thead_dwmac_fix_speed(void *priv, unsigned int speed, unsigned int m
 	}
 }
 
-static int thead_dwmac_enable_clk(struct plat_stmmacenet_data *plat)
+static int xuantie_dwmac_enable_clk(struct plat_stmmacenet_data *plat)
 {
-	struct thead_dwmac *dwmac = plat->bsp_priv;
+	struct xuantie_dwmac *dwmac = plat->bsp_priv;
 	u32 reg;
 
 	switch (plat->mac_interface) {
@@ -206,10 +206,10 @@ static int thead_dwmac_enable_clk(struct plat_stmmacenet_data *plat)
 
 	return 0;
 }
-static void thead_dwmac_set_ptp_clk(struct plat_stmmacenet_data *plat_dat,unsigned int ptp_clk_rate)
+static void xuantie_dwmac_set_ptp_clk(struct plat_stmmacenet_data *plat_dat,unsigned int ptp_clk_rate)
 {
 	unsigned int div;
-	struct thead_dwmac *dwmac = plat_dat->bsp_priv;
+	struct xuantie_dwmac *dwmac = plat_dat->bsp_priv;
 
 	unsigned long src_freq = clk_get_rate(plat_dat->stmmac_clk);
 
@@ -231,17 +231,17 @@ static void thead_dwmac_set_ptp_clk(struct plat_stmmacenet_data *plat_dat,unsign
 	return ;
 }
 
-static int thead_dwmac_init(struct platform_device *pdev,
+static int xuantie_dwmac_init(struct platform_device *pdev,
 			    void *bsp_priv)
 {
-	struct thead_dwmac *dwmac = bsp_priv;
+	struct xuantie_dwmac *dwmac = bsp_priv;
 	int ret;
 
-	ret = thead_dwmac_set_phy_if(dwmac->plat);
+	ret = xuantie_dwmac_set_phy_if(dwmac->plat);
 	if (ret)
 		return ret;
 
-	ret = thead_dwmac_set_txclk_dir(dwmac->plat);
+	ret = xuantie_dwmac_set_txclk_dir(dwmac->plat);
 	if (ret)
 		return ret;
 
@@ -250,28 +250,28 @@ static int thead_dwmac_init(struct platform_device *pdev,
 	regmap_write(dwmac->apb_regmap, GMAC_TXCLK_DELAY_CTRL,
 		     GMAC_TXCLK_DELAY_VAL(dwmac->tx_delay));
 
-	thead_dwmac_fix_speed(dwmac, SPEED_1000, 0);
+	xuantie_dwmac_fix_speed(dwmac, SPEED_1000, 0);
 
-	thead_dwmac_set_ptp_clk(dwmac->plat,GMAC_PTP_CLK_RATE);
+	xuantie_dwmac_set_ptp_clk(dwmac->plat,GMAC_PTP_CLK_RATE);
 
-	return thead_dwmac_enable_clk(dwmac->plat);
+	return xuantie_dwmac_enable_clk(dwmac->plat);
 }
 
-int thead_dwmac_clk_enable(struct platform_device *pdev, void *bsp_priv)
+int xuantie_dwmac_clk_enable(struct platform_device *pdev, void *bsp_priv)
 {
-	struct thead_dwmac *thead_plat_dat = bsp_priv;
+	struct xuantie_dwmac *xuantie_plat_dat = bsp_priv;
 	struct device *dev = &pdev->dev;
 	int ret;
 	pm_debug(dev,"enter %s()\n",__func__);
 
-	ret = clk_prepare_enable(thead_plat_dat->gmac_axi_aclk);
+	ret = clk_prepare_enable(xuantie_plat_dat->gmac_axi_aclk);
 	if (ret) {
 		dev_err(dev, "Failed to enable clk 'gmac_axi_aclk'\n");
 		return -EINVAL;
 	}
-	ret = clk_prepare_enable(thead_plat_dat->gmac_axi_pclk);
+	ret = clk_prepare_enable(xuantie_plat_dat->gmac_axi_pclk);
 	if (ret) {
-		clk_disable_unprepare(thead_plat_dat->gmac_axi_aclk);
+		clk_disable_unprepare(xuantie_plat_dat->gmac_axi_aclk);
 		dev_err(dev, "Failed to enable clk 'gmac_axi_pclk'\n");
 		return -EINVAL;
 	}
@@ -279,14 +279,14 @@ int thead_dwmac_clk_enable(struct platform_device *pdev, void *bsp_priv)
 	return ret;
 }
 
-void thead_dwmac_clk_disable(struct platform_device *pdev, void *bsp_priv)
+void xuantie_dwmac_clk_disable(struct platform_device *pdev, void *bsp_priv)
 {
-	struct thead_dwmac *thead_plat_dat = bsp_priv;
+	struct xuantie_dwmac *xuantie_plat_dat = bsp_priv;
 	struct device *dev = &pdev->dev;
 	pm_debug(dev,"enter %s()\n",__func__);
 	
-	clk_disable_unprepare(thead_plat_dat->gmac_axi_aclk);
-	clk_disable_unprepare(thead_plat_dat->gmac_axi_pclk);
+	clk_disable_unprepare(xuantie_plat_dat->gmac_axi_aclk);
+	clk_disable_unprepare(xuantie_plat_dat->gmac_axi_pclk);
 
 	return ;
 }
@@ -353,11 +353,11 @@ static int dwmac1000_validate_ucast_entries(struct device *dev,
 	return x;
 }
 
-static int thead_dwmac_probe(struct platform_device *pdev)
+static int xuantie_dwmac_probe(struct platform_device *pdev)
 {
 	struct plat_stmmacenet_data *plat;
 	struct stmmac_resources stmmac_res;
-	struct thead_dwmac *dwmac;
+	struct xuantie_dwmac *dwmac;
 	struct device_node *np = pdev->dev.of_node;
 	struct device *dev = &pdev->dev;
 	u32 delay_ps;
@@ -394,7 +394,7 @@ static int thead_dwmac_probe(struct platform_device *pdev)
 	if (!of_property_read_u32(np, "tx-internal-delay-ps", &delay_ps))
 		dwmac->tx_delay = delay_ps;
 
-	dwmac->apb_regmap = syscon_regmap_lookup_by_phandle(np, "thead,gmacapb");
+	dwmac->apb_regmap = syscon_regmap_lookup_by_phandle(np, "xuantie,gmacapb");
 	if (IS_ERR(dwmac->apb_regmap)) {
 		ret = dev_err_probe(&pdev->dev, PTR_ERR(dwmac->apb_regmap),
 				     "Failed to get gmac apb syscon\n");
@@ -412,14 +412,14 @@ static int thead_dwmac_probe(struct platform_device *pdev)
 	dwmac->dev = &pdev->dev;
 	dwmac->plat = plat;
 	plat->bsp_priv = dwmac;
-	plat->fix_mac_speed = thead_dwmac_fix_speed;
-	plat->init = thead_dwmac_init;
+	plat->fix_mac_speed = xuantie_dwmac_fix_speed;
+	plat->init = xuantie_dwmac_init;
 
-	ret = thead_dwmac_clk_enable(pdev,dwmac);
+	ret = xuantie_dwmac_clk_enable(pdev,dwmac);
 	if (ret)
 		goto err_remove_config_dt;
 
-	ret = thead_dwmac_init(pdev, dwmac);
+	ret = xuantie_dwmac_init(pdev, dwmac);
 	if (ret)
 		goto err_exit;
 
@@ -431,19 +431,19 @@ static int thead_dwmac_probe(struct platform_device *pdev)
 
 err_exit:
 	dev_err(dev,"%s: dwmac probe faild,ret%d\n",__func__,ret);
-	thead_dwmac_clk_disable(pdev, dwmac);
+	xuantie_dwmac_clk_disable(pdev, dwmac);
 err_remove_config_dt:
 	stmmac_remove_config_dt(pdev, plat);
 	return ret;
 }
 /**
- * thead_dwmac_suspend
+ * xuantie_dwmac_suspend
  * @dev: device pointer
  * Description: this function is invoked when suspend the driver and it direcly
  * call the main suspend function and then, if required, on some platform, it
  * can call an exit helper.
  */
-static int __maybe_unused thead_dwmac_suspend(struct device *dev)
+static int __maybe_unused xuantie_dwmac_suspend(struct device *dev)
 {
 	int ret;
 	struct net_device *ndev = dev_get_drvdata(dev);
@@ -458,13 +458,13 @@ static int __maybe_unused thead_dwmac_suspend(struct device *dev)
 }
 
 /**
- * thead_dwmac_resume
+ * xuantie_dwmac_resume
  * @dev: device pointer
  * Description: this function is invoked when resume the driver before calling
  * the main resume function, on some platforms, it can call own init helper
  * if required.
  */
-static int __maybe_unused thead_dwmac_resume(struct device *dev)
+static int __maybe_unused xuantie_dwmac_resume(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
 	struct stmmac_priv *priv = netdev_priv(ndev);
@@ -479,18 +479,18 @@ static int __maybe_unused thead_dwmac_resume(struct device *dev)
 	return stmmac_resume(dev);
 }
 
-static int __maybe_unused thead_dwmac_runtime_suspend(struct device *dev)
+static int __maybe_unused xuantie_dwmac_runtime_suspend(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
 	struct stmmac_priv *priv = netdev_priv(ndev);
 	struct platform_device *pdev = to_platform_device(dev);
 	pm_debug(dev,"enter %s()\n",__func__);
 	stmmac_bus_clks_config(priv, false);
-	thead_dwmac_clk_disable(pdev, priv->plat->bsp_priv);
+	xuantie_dwmac_clk_disable(pdev, priv->plat->bsp_priv);
 	return 0;
 }
 
-static int __maybe_unused thead_dwmac_runtime_resume(struct device *dev)
+static int __maybe_unused xuantie_dwmac_runtime_resume(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
 	struct stmmac_priv *priv = netdev_priv(ndev);
@@ -500,14 +500,14 @@ static int __maybe_unused thead_dwmac_runtime_resume(struct device *dev)
 	ret = stmmac_bus_clks_config(priv, true);
 	if(ret)
 		return ret;
-	ret = thead_dwmac_clk_enable(pdev, priv->plat->bsp_priv);
+	ret = xuantie_dwmac_clk_enable(pdev, priv->plat->bsp_priv);
 	if(ret)
 		return ret;
 
 	return 0;
 }
 
-static int __maybe_unused thead_dwmac_noirq_suspend(struct device *dev)
+static int __maybe_unused xuantie_dwmac_noirq_suspend(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
 	struct stmmac_priv *priv = netdev_priv(ndev);
@@ -528,7 +528,7 @@ static int __maybe_unused thead_dwmac_noirq_suspend(struct device *dev)
 	return 0;
 }
 
-static int __maybe_unused thead_dwmac_noirq_resume(struct device *dev)
+static int __maybe_unused xuantie_dwmac_noirq_resume(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
 	struct stmmac_priv *priv = netdev_priv(ndev);
@@ -556,30 +556,29 @@ static int __maybe_unused thead_dwmac_noirq_resume(struct device *dev)
 }
 
 /*similar with stmmac_pltfr_pm_ops,but clks enable/disable add this drv need */
-const struct dev_pm_ops thead_dwmac_pm_ops = {
-	SET_SYSTEM_SLEEP_PM_OPS(thead_dwmac_suspend, thead_dwmac_resume)
-	SET_RUNTIME_PM_OPS(thead_dwmac_runtime_suspend, thead_dwmac_runtime_resume, NULL)
-	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(thead_dwmac_noirq_suspend, thead_dwmac_noirq_resume)
+const struct dev_pm_ops xuantie_dwmac_pm_ops = {
+	SET_SYSTEM_SLEEP_PM_OPS(xuantie_dwmac_suspend, xuantie_dwmac_resume)
+	SET_RUNTIME_PM_OPS(xuantie_dwmac_runtime_suspend, xuantie_dwmac_runtime_resume, NULL)
+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(xuantie_dwmac_noirq_suspend, xuantie_dwmac_noirq_resume)
 };
 
-static const struct of_device_id thead_dwmac_match[] = {
-	{ .compatible = "thead,th1520-dwmac" },
+static const struct of_device_id xuantie_dwmac_match[] = {
+	{ .compatible = "xuantie,th1520-dwmac" },
 	{ }
 };
-MODULE_DEVICE_TABLE(of, thead_dwmac_match);
+MODULE_DEVICE_TABLE(of, xuantie_dwmac_match);
 
-static struct platform_driver thead_dwmac_driver = {
-	.probe = thead_dwmac_probe,
+static struct platform_driver xuantie_dwmac_driver = {
+	.probe = xuantie_dwmac_probe,
 	.remove_new = stmmac_pltfr_remove,
 	.driver = {
-		.name = "thead-dwmac",
-		.pm = &thead_dwmac_pm_ops,
-		.of_match_table = thead_dwmac_match,
+		.name = "xuantie-dwmac",
+		.pm = &xuantie_dwmac_pm_ops,
+		.of_match_table = xuantie_dwmac_match,
 	},
 };
-module_platform_driver(thead_dwmac_driver);
+module_platform_driver(xuantie_dwmac_driver);
 
-MODULE_AUTHOR("T-HEAD");
 MODULE_AUTHOR("Jisheng Zhang <jszhang@kernel.org>");
-MODULE_DESCRIPTION("T-HEAD dwmac platform driver");
+MODULE_DESCRIPTION("XuanTie dwmac platform driver");
 MODULE_LICENSE("GPL");
