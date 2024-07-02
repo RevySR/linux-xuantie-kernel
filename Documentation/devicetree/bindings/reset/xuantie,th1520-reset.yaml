@@ -4,7 +4,7 @@
 $id: http://devicetree.org/schemas/reset/xuantie,th1520-reset.yaml#
 $schema: http://devicetree.org/meta-schemas/core.yaml#
 
-title: T-HEAD th1520 SoC Reset Controller
+title: XuanTie th1520 SoC Reset Controller
 
 maintainers:
   - Kwanghoon Son <k.son@samsung.com>

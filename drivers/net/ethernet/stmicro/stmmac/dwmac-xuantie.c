@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * T-HEAD DWMAC platform driver
+ * XuanTie DWMAC platform driver
  *
  * Copyright (C) 2021 Alibaba Group Holding Limited.
  * Copyright (C) 2023 Jisheng Zhang <jszhang@kernel.org>
