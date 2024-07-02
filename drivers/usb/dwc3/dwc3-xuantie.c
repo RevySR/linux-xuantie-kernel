@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * dwc3-thead.c - THEAD platform specific glue layer
+ * dwc3-xuantie.c - XuanTie platform specific glue layer
  *
  * Inspired by dwc3-of-simple.c
  *
@@ -76,7 +76,7 @@ static bool usb_role = USB_AS_HOST;
 module_param(usb_role, bool, S_IRUGO | S_IWUSR);
 MODULE_PARM_DESC(usb_role, "USB role");
 
-struct dwc3_thead {
+struct dwc3_xuantie {
 	struct device			*dev;
 	struct clk_bulk_data	*clks;
 	int						num_clocks;
@@ -90,10 +90,10 @@ struct dwc3_thead {
 	struct regulator		*vbus;
 };
 
-static void dwc3_thead_deassert(struct dwc3_thead *thead)
+static void dwc3_xuantie_deassert(struct dwc3_xuantie *xuantie)
 {
 	/* 1. reset assert */
-	regmap_update_bits(thead->misc_sysreg, USB3_DRD_SWRST,
+	regmap_update_bits(xuantie->misc_sysreg, USB3_DRD_SWRST,
 				USB3_DRD_MASK, USB3_DRD_PRST);
 
 	/*
@@ -101,7 +101,7 @@ static void dwc3_thead_deassert(struct dwc3_thead *thead)
 	 *	Controls the power-down signals in the PLL block
 	 *	when the USB 3.0 femtoPHY is in Suspend or Sleep mode.
 	 */
-	writel(COMMONONN, thead->usb3_drd_base + USB_SYS);
+	writel(COMMONONN, xuantie->usb3_drd_base + USB_SYS);
 
 	/*
 	 *	3. Reference Clock Enable for SS function.
@@ -111,71 +111,71 @@ static void dwc3_thead_deassert(struct dwc3_thead *thead)
 	 *	at which point ref_ssp_en can be asserted.
 	 *	For lower power states, ref_ssp_en can also be de-asserted.
 	 */
-	writel(REF_SSP_EN, thead->usb3_drd_base + USB_SSP_EN);
+	writel(REF_SSP_EN, xuantie->usb3_drd_base + USB_SSP_EN);
 
 	/* 4. set host ctrl */
-	writel(0x1101, thead->usb3_drd_base + USB_HOST_CTRL);
+	writel(0x1101, xuantie->usb3_drd_base + USB_HOST_CTRL);
 
 	/* 5. reset deassert */
-	regmap_update_bits(thead->misc_sysreg, USB3_DRD_SWRST,
+	regmap_update_bits(xuantie->misc_sysreg, USB3_DRD_SWRST,
 				USB3_DRD_MASK, USB3_DRD_MASK);
 
 	/* 6. wait deassert complete */
 	udelay(10);
 }
 
-static void dwc3_thead_assert(struct dwc3_thead *thead)
+static void dwc3_xuantie_assert(struct dwc3_xuantie *xuantie)
 {
 	/* close ssp */
-	writel(0, thead->usb3_drd_base + USB_SSP_EN);
+	writel(0, xuantie->usb3_drd_base + USB_SSP_EN);
 
 	/* reset assert usb */
-	regmap_update_bits(thead->misc_sysreg, USB3_DRD_SWRST,
+	regmap_update_bits(xuantie->misc_sysreg, USB3_DRD_SWRST,
 				USB3_DRD_MASK, 0);
 
 }
 
-static int dwc3_thead_probe(struct platform_device *pdev)
+static int dwc3_xuantie_probe(struct platform_device *pdev)
 {
 	struct device		*dev = &pdev->dev;
 	struct device_node	*np  = dev->of_node;
-	struct dwc3_thead	*thead;
+	struct dwc3_xuantie	*xuantie;
 	int					ret;
 
-	thead = devm_kzalloc(&pdev->dev, sizeof(*thead), GFP_KERNEL);
-	if (!thead)
+	xuantie = devm_kzalloc(&pdev->dev, sizeof(*xuantie), GFP_KERNEL);
+	if (!xuantie)
 		return -ENOMEM;
 
-	platform_set_drvdata(pdev, thead);
-	thead->dev = &pdev->dev;
+	platform_set_drvdata(pdev, xuantie);
+	xuantie->dev = &pdev->dev;
 
-	thead->misc_sysreg = syscon_regmap_lookup_by_phandle(np, "usb3-misc-regmap");
-	if (IS_ERR(thead->misc_sysreg)) {
-		dev_err(dev, "failed to get regmap - %ld\n", PTR_ERR(thead->misc_sysreg));
+	xuantie->misc_sysreg = syscon_regmap_lookup_by_phandle(np, "usb3-misc-regmap");
+	if (IS_ERR(xuantie->misc_sysreg)) {
+		dev_err(dev, "failed to get regmap - %ld\n", PTR_ERR(xuantie->misc_sysreg));
 
 
-		return PTR_ERR(thead->misc_sysreg);
+		return PTR_ERR(xuantie->misc_sysreg);
 	}
 
-	thead->usb3_drd_base = devm_platform_ioremap_resource(pdev, 0);
-	if (IS_ERR(thead->usb3_drd_base)) {
-		dev_err(dev, "failed to get resource - %ld\n", PTR_ERR(thead->usb3_drd_base));
-		return PTR_ERR(thead->usb3_drd_base);
+	xuantie->usb3_drd_base = devm_platform_ioremap_resource(pdev, 0);
+	if (IS_ERR(xuantie->usb3_drd_base)) {
+		dev_err(dev, "failed to get resource - %ld\n", PTR_ERR(xuantie->usb3_drd_base));
+		return PTR_ERR(xuantie->usb3_drd_base);
 	}
 
-	ret = clk_bulk_get_all(thead->dev, &thead->clks);
+	ret = clk_bulk_get_all(xuantie->dev, &xuantie->clks);
 	if (ret < 0) {
 		dev_err(dev, "failed to get clk - %d\n", ret);
 		goto err;
 	}
 
-	thead->num_clocks = ret;
+	xuantie->num_clocks = ret;
 
-	ret = clk_bulk_prepare_enable(thead->num_clocks, thead->clks);
+	ret = clk_bulk_prepare_enable(xuantie->num_clocks, xuantie->clks);
 	if (ret)
 		goto err;
 
-	dwc3_thead_deassert(thead);
+	dwc3_xuantie_deassert(xuantie);
 
 	ret = of_platform_populate(np, NULL, NULL, dev);
 	if (ret) {
@@ -194,77 +194,77 @@ static int dwc3_thead_probe(struct platform_device *pdev)
 	return 0;
 
 err_clk_put:
-	clk_bulk_disable_unprepare(thead->num_clocks, thead->clks);
-	clk_bulk_put_all(thead->num_clocks, thead->clks);
+	clk_bulk_disable_unprepare(xuantie->num_clocks, xuantie->clks);
+	clk_bulk_put_all(xuantie->num_clocks, xuantie->clks);
 err:
 	return ret;
 }
 
-static int dwc3_thead_remove(struct platform_device *pdev)
+static int dwc3_xuantie_remove(struct platform_device *pdev)
 {
-	struct dwc3_thead	*thead = platform_get_drvdata(pdev);
+	struct dwc3_xuantie	*xuantie = platform_get_drvdata(pdev);
 
-	dwc3_thead_assert(thead);
+	dwc3_xuantie_assert(xuantie);
 
-	of_platform_depopulate(thead->dev);
+	of_platform_depopulate(xuantie->dev);
 
-	clk_bulk_disable_unprepare(thead->num_clocks, thead->clks);
-	clk_bulk_put_all(thead->num_clocks, thead->clks);
+	clk_bulk_disable_unprepare(xuantie->num_clocks, xuantie->clks);
+	clk_bulk_put_all(xuantie->num_clocks, xuantie->clks);
 
-	pm_runtime_disable(thead->dev);
-	pm_runtime_set_suspended(thead->dev);
+	pm_runtime_disable(xuantie->dev);
+	pm_runtime_set_suspended(xuantie->dev);
 
 	return 0;
 }
 
 #ifdef CONFIG_PM_SLEEP
-static int dwc3_thead_pm_suspend(struct device *dev)
+static int dwc3_xuantie_pm_suspend(struct device *dev)
 {
-	struct dwc3_thead *thead = dev_get_drvdata(dev);
+	struct dwc3_xuantie *xuantie = dev_get_drvdata(dev);
 
-	dwc3_thead_assert(thead);
+	dwc3_xuantie_assert(xuantie);
 
-	clk_bulk_disable(thead->num_clocks, thead->clks);
+	clk_bulk_disable(xuantie->num_clocks, xuantie->clks);
 
 	return 0;
 }
 
 
-static int dwc3_thead_pm_resume(struct device *dev)
+static int dwc3_xuantie_pm_resume(struct device *dev)
 {
-	struct dwc3_thead *thead = dev_get_drvdata(dev);
+	struct dwc3_xuantie *xuantie = dev_get_drvdata(dev);
 
-	dwc3_thead_deassert(thead);
+	dwc3_xuantie_deassert(xuantie);
 
 	return 0;
 }
 
-static const struct dev_pm_ops dwc3_thead_dev_pm_ops = {
-	SET_SYSTEM_SLEEP_PM_OPS(dwc3_thead_pm_suspend, dwc3_thead_pm_resume)
+static const struct dev_pm_ops dwc3_xuantie_dev_pm_ops = {
+	SET_SYSTEM_SLEEP_PM_OPS(dwc3_xuantie_pm_suspend, dwc3_xuantie_pm_resume)
 };
-#define DEV_PM_OPS	(&dwc3_thead_dev_pm_ops)
+#define DEV_PM_OPS	(&dwc3_xuantie_dev_pm_ops)
 #else
 #define DEV_PM_OPS	NULL
 #endif /* CONFIG_PM_SLEEP */
 
-static const struct of_device_id dwc3_thead_of_match[] = {
-	{ .compatible = "thead,th1520-usb" },
+static const struct of_device_id dwc3_xuantie_of_match[] = {
+	{ .compatible = "xuantie,th1520-usb" },
 	{ },
 };
-MODULE_DEVICE_TABLE(of, dwc3_thead_of_match);
+MODULE_DEVICE_TABLE(of, dwc3_xuantie_of_match);
 
-static struct platform_driver dwc3_thead_driver = {
-	.probe		= dwc3_thead_probe,
-	.remove		= dwc3_thead_remove,
+static struct platform_driver dwc3_xuantie_driver = {
+	.probe		= dwc3_xuantie_probe,
+	.remove		= dwc3_xuantie_remove,
 	.driver		= {
-		.name	= "dwc3-thead",
+		.name	= "dwc3-xuantie",
 		.pm	= DEV_PM_OPS,
-		.of_match_table	= dwc3_thead_of_match,
+		.of_match_table	= dwc3_xuantie_of_match,
 	},
 };
 
-module_platform_driver(dwc3_thead_driver);
+module_platform_driver(dwc3_xuantie_driver);
 
 MODULE_LICENSE("GPL v2");
-MODULE_DESCRIPTION("DesignWare DWC3 T-HEAD Glue Driver");
+MODULE_DESCRIPTION("DesignWare DWC3 XuanTie Glue Driver");
 MODULE_AUTHOR("Jisheng Zhang <jszhang@kernel.org>");
