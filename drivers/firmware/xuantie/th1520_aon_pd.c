@@ -3,7 +3,7 @@
  * Copyright (C) 2021 Alibaba Group Holding Limited.
  */
 
-#include <dt-bindings/firmware/thead/rsrc.h>
+#include <dt-bindings/firmware/xuantie/rsrc.h>
 #include <linux/ctype.h>
 #include <linux/debugfs.h>
 #include <linux/firmware/xuantie/ipc.h>
