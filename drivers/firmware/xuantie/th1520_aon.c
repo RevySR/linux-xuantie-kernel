@@ -4,7 +4,7 @@
  */
 
 #include <linux/err.h>
-#include <linux/firmware/thead/ipc.h>
+#include <linux/firmware/xuantie/ipc.h>
 #include <linux/interrupt.h>
 #include <linux/irq.h>
 #include <linux/kernel.h>
@@ -17,7 +17,7 @@
 #include <linux/platform_device.h>
 #include <linux/proc_fs.h>
 #include <linux/th1520_proc_debug.h>
-#include <linux/firmware/thead/ipc.h>
+#include <linux/firmware/xuantie/ipc.h>
 
 /* wait for response for 3000ms instead of 300ms (fix me pls)*/
 #define MAX_RX_TIMEOUT (msecs_to_jiffies(3000))

@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 %YAML 1.2
 ---
-$id: http://devicetree.org/schemas/soc/thead/thead,th1520-event.yaml#
+$id: http://devicetree.org/schemas/soc/xuantie/xuantie,th1520-event.yaml#
 $schema: http://devicetree.org/meta-schemas/core.yaml#
 
-title: Thead TH1520 SOC Rebootmode Feature
+title: XuanTie TH1520 SOC Rebootmode Feature
 
 maintainers:
   - Hao Li <ben.lihao@linux.alibaba.com>
@@ -18,7 +18,7 @@ description:
 properties:
   compatible:
       - items:
-          - const: thead,th1520-event
+          - const: xuantie,th1520-event
 
   aon-iram-regmap:
     description:
@@ -31,7 +31,7 @@ required:
 examples:
   - |
     th1520_event: th1520-event {
-        compatible = "thead,th1520-event";
+        compatible = "xuantie,th1520-event";
         aon-iram-regmap = <&aon_iram>;
         status = "okay";
     };

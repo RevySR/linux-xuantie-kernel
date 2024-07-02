@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-only
-menu "Thead SoC drivers"
+menu "XuanTie SoC drivers"
 
 config TH1520_REBOOTMODE
 	bool "XuanTie th1520 rebootmode support"

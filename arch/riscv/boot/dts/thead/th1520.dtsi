@@ -1381,7 +1381,7 @@
 		};
 
 		th1520_event: th1520-event {
-			compatible = "thead,th1520-event";
+			compatible = "xuantie,th1520-event";
 			aon-iram-regmap = <&aon_iram>;
 			status = "okay";
 		};

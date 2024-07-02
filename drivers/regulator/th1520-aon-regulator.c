@@ -17,7 +17,7 @@
 #include <linux/regulator/machine.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
-#include <linux/firmware/thead/ipc.h>
+#include <linux/firmware/xuantie/ipc.h>
 
 #define MBOX_MAX_MSG_LEN	28
 

@@ -6,7 +6,7 @@
 #include <dt-bindings/firmware/thead/rsrc.h>
 #include <linux/ctype.h>
 #include <linux/debugfs.h>
-#include <linux/firmware/thead/ipc.h>
+#include <linux/firmware/xuantie/ipc.h>
 #include <linux/io.h>
 #include <linux/module.h>
 #include <linux/of.h>

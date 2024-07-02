@@ -6,8 +6,8 @@
 #include <linux/mfd/syscon.h>
 #include <linux/regmap.h>
 #include <linux/platform_device.h>
-#include <linux/firmware/thead/ipc.h>
-#include <linux/firmware/thead/th1520_event.h>
+#include <linux/firmware/xuantie/ipc.h>
+#include <linux/firmware/xuantie/th1520_event.h>
 
 /*
  * AON SRAM total size is 0x10000, reserve 0x100 for event.
@@ -210,35 +210,35 @@ static int th1520_event_probe(struct platform_device *pdev)
 {
 	struct device		*dev = &pdev->dev;
 	struct device_node	*np = dev->of_node;
-	struct th1520_event	*thead;
+	struct th1520_event	*event;
 	int			ret;
 
-	thead = devm_kzalloc(&pdev->dev, sizeof(*thead), GFP_KERNEL);
-	if (!thead)
+	event = devm_kzalloc(&pdev->dev, sizeof(*event), GFP_KERNEL);
+	if (!event)
 		return -ENOMEM;
 
-	ret = th1520_aon_get_handle(&(thead->ipc_handle));
+	ret = th1520_aon_get_handle(&(event->ipc_handle));
 	if (ret == -EPROBE_DEFER)
 		return ret;
 
-	platform_set_drvdata(pdev, thead);
-	thead->dev = &pdev->dev;
+	platform_set_drvdata(pdev, event);
+	event->dev = &pdev->dev;
 
-	thead->aon_iram = syscon_regmap_lookup_by_phandle(np, "aon-iram-regmap");
-	if (IS_ERR(thead->aon_iram))
-		return PTR_ERR(thead->aon_iram);
+	event->aon_iram = syscon_regmap_lookup_by_phandle(np, "aon-iram-regmap");
+	if (IS_ERR(event->aon_iram))
+		return PTR_ERR(event->aon_iram);
 
 	ret = misc_register(&th1520_event_misc);
 	if (ret < 0)
 		return ret;
 
-	ret = th1520_event_aon_reservemem(thead);
+	ret = th1520_event_aon_reservemem(event);
 	if (ret) {
 		dev_err(dev, "set aon reservemem failed!\n");
 		return -EPERM;
 	}
-	thead->init = true;
-	th1520_event = thead;
+	event->init = true;
+	th1520_event = event;
 
 	ret = th1520_event_check_powerup();
 	if (ret) {
@@ -259,7 +259,7 @@ static int th1520_event_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id th1520_event_of_match[] = {
-	{ .compatible = "thead,th1520-event" },
+	{ .compatible = "xuantie,th1520-event" },
 	{ },
 };
 MODULE_DEVICE_TABLE(of, th1520_event_of_match);
