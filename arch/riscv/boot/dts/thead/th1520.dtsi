@@ -711,7 +711,7 @@
 		};
 
 		audio_mbox: audio_mbox@0xffefc48000 {
-			compatible = "thead,th1520-audio-mbox-reg", "syscon";
+			compatible = "xuantie,th1520-audio-mbox-reg", "syscon";
 			reg = <0xff 0xefc48000 0x0 0x1000>;
 			status = "okay";
 		};
@@ -761,12 +761,12 @@
 		};
 
 		gmac0_apb: syscon@ffec003000 {
-			compatible = "thead,th1520-gmac-apb", "syscon";
+			compatible = "xuantie,th1520-gmac-apb", "syscon";
 			reg = <0xff 0xec003000 0x0 0x1000>;
 		};
 
 		gmac1_apb: syscon@ffec004000 {
-			compatible = "thead,th1520-gmac-apb", "syscon";
+			compatible = "xuantie,th1520-gmac-apb", "syscon";
 			reg = <0xff 0xec004000 0x0 0x1000>;
 		};
 
@@ -822,7 +822,7 @@
 		};
 
 		misc_sysreg: misc_sysreg@ffec02c000 {
-			compatible = "thead,th1520-misc-sysreg", "syscon";
+			compatible = "xuantie,th1520-misc-sysreg", "syscon";
 			reg = <0xff 0xec02c000 0x0 0x1000>;
 		};
 
@@ -1105,7 +1105,7 @@
 		};
 
 		visys_reg: visys-reg@ffe4040000 {
-			compatible = "thead,th1520-visys-reg", "syscon";
+			compatible = "xuantie,th1520-visys-reg", "syscon";
 			reg = <0xff 0xe4040000 0x0 0x1000>;
 			status = "disabled";
 		};
@@ -1237,7 +1237,7 @@
 		};
 
 		aon_suspend_ctrl: aon_suspend_ctrl {
-		        compatible = "thead,th1520-aon-suspend-ctrl";
+		        compatible = "xuantie,th1520-aon-suspend-ctrl";
 		        status = "okay";
 		};
 
@@ -1248,25 +1248,25 @@
 		};
 
 		dspsys_reg: dspsys-reg@ffef040000 {
-			compatible = "thead,th1520-dspsys-reg", "syscon";
+			compatible = "xuantie,th1520-dspsys-reg", "syscon";
 			reg = <0xff 0xef040000 0x0 0x1000>;
 			status = "okay";
 		};
 
 		miscsys_reg: miscsys-reg@ffec02c000 {
-			compatible = "thead,th1520-miscsys-reg", "syscon";
+			compatible = "xuantie,th1520-miscsys-reg", "syscon";
 			reg = <0xff 0xec02c000 0x0 0x1000>;
 			status = "okay";
 		};
  
 		tee_miscsys_reg: tee_miscsys-reg@fffc02d000 {
-			compatible = "thead,th1520-miscsys-reg", "syscon";
+			compatible = "xuantie,th1520-miscsys-reg", "syscon";
 			reg = <0xff 0xfc02d000 0x0 0x1000>;
 			status = "okay";
 		};
 
 		audio_cpr: audio_cpr@ffcb000000 {
-			compatible = "thead,th1520-audio-cpr-reg", "syscon";
+			compatible = "xuantie,th1520-audio-cpr-reg", "syscon";
 			reg = <0xff 0xcb000000 0x0 0x1000>;
 			status = "okay";
 		};
