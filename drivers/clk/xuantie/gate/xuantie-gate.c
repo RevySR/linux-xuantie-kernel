@@ -16,11 +16,11 @@
 #include <linux/regmap.h>
 #include "clk-gate.h"
 
-#define to_thead_clk_gate(_hw)	container_of(_hw, struct thead_clk_gate, hw)
+#define to_xuantie_clk_gate(_hw)	container_of(_hw, struct xuantie_clk_gate, hw)
 
-static int thead_clk_gate_is_enabled(struct clk_hw *hw)
+static int xuantie_clk_gate_is_enabled(struct clk_hw *hw)
 {
-	struct thead_clk_gate *tcg = to_thead_clk_gate(hw);
+	struct xuantie_clk_gate *tcg = to_xuantie_clk_gate(hw);
 	u32 val;
 
 	regmap_read(tcg->regmap, tcg->offset, &val);
@@ -30,9 +30,9 @@ static int thead_clk_gate_is_enabled(struct clk_hw *hw)
 	return val != 0;
 }
 
-static void thead_clk_gate_disable(struct clk_hw *hw)
+static void xuantie_clk_gate_disable(struct clk_hw *hw)
 {
-	struct thead_clk_gate *tcg = to_thead_clk_gate(hw);
+	struct xuantie_clk_gate *tcg = to_xuantie_clk_gate(hw);
 
 	if (!tcg->shared)
 		goto out;
@@ -52,9 +52,9 @@ out:
 			   BIT(tcg->bit), 0);
 }
 
-static int thead_clk_gate_enable(struct clk_hw *hw)
+static int xuantie_clk_gate_enable(struct clk_hw *hw)
 {
-	struct thead_clk_gate *tcg = to_thead_clk_gate(hw);
+	struct xuantie_clk_gate *tcg = to_xuantie_clk_gate(hw);
 
 	if (!tcg->shared)
 		goto out;
@@ -69,13 +69,13 @@ out:
 				  BIT(tcg->bit), BIT(tcg->bit));
 }
 
-const struct clk_ops thead_gate_clk_ops = {
-	.enable = thead_clk_gate_enable,
-	.disable = thead_clk_gate_disable,
-	.is_enabled = thead_clk_gate_is_enabled,
+const struct clk_ops xuantie_gate_clk_ops = {
+	.enable = xuantie_clk_gate_enable,
+	.disable = xuantie_clk_gate_disable,
+	.is_enabled = xuantie_clk_gate_is_enabled,
 };
 
-struct clk *thead_gate_clk_register(const char *name,
+struct clk *xuantie_gate_clk_register(const char *name,
 				    const char *parent_name,
 				    struct regmap *regmap,
 				    int offset,
@@ -84,7 +84,7 @@ struct clk *thead_gate_clk_register(const char *name,
 				    u32 *share_count,
 				    struct device *dev)
 {
-	struct thead_clk_gate *tcg;
+	struct xuantie_clk_gate *tcg;
 	struct clk *clk;
 	struct clk_init_data init = {};
 
@@ -102,7 +102,7 @@ struct clk *thead_gate_clk_register(const char *name,
 	init.flags = CLK_SET_RATE_PARENT;
 	init.parent_names = parent_name ? &parent_name : NULL;
 	init.num_parents = parent_name ? 1 : 0;
-	init.ops = &thead_gate_clk_ops;
+	init.ops = &xuantie_gate_clk_ops;
 
 	tcg->hw.init = &init;
 

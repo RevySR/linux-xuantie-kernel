@@ -36,7 +36,7 @@
 
 #define div_mask(d)	((1 << (d->width)) - 1)
 
-DEFINE_SPINLOCK(thead_th1520_clk_lock);
+DEFINE_SPINLOCK(xuantie_th1520_clk_lock);
 
 enum th1520_pll_mode {
         PLL_MODE_FRAC,
@@ -83,7 +83,7 @@ struct clk_th1520gate {
 
 #define to_clk_th1520pll(_hw) container_of(_hw, struct clk_th1520pll, hw)
 
-void thead_unregister_clocks(struct clk *clks[], unsigned int count)
+void xuantie_unregister_clocks(struct clk *clks[], unsigned int count)
 {
         unsigned int i;
 
@@ -454,7 +454,7 @@ static const struct clk_ops clk_th1520_plldiv_ops = {
 	.set_rate	= clk_th1520_pll_set_rate,
 };
 
-struct clk *thead_th1520_pll(const char *name, const char *parent_name,
+struct clk *xuantie_th1520_pll(const char *name, const char *parent_name,
 			    void __iomem *base,
 			    const struct th1520_pll_clk *pll_clk)
 {
@@ -597,7 +597,7 @@ static const struct clk_ops clk_th1520div_ops = {
 	.set_rate = clk_th1520div_set_rate,
 };
 
-static struct clk *thead_clk_th1520_divider_internal(const char *name, const char *parent,
+static struct clk *xuantie_clk_th1520_divider_internal(const char *name, const char *parent,
 				       void __iomem *reg, u8 shift, u8 width,
 				       u8 sync, enum th1520_div_type div_type,
 				       u16 min, u16 max, bool closest)
@@ -620,7 +620,7 @@ static struct clk *thead_clk_th1520_divider_internal(const char *name, const cha
 	th1520_div->divider.reg = reg;
 	th1520_div->divider.shift = shift;
 	th1520_div->divider.width = width;
-	th1520_div->divider.lock = &thead_th1520_clk_lock;
+	th1520_div->divider.lock = &xuantie_th1520_clk_lock;
 	th1520_div->divider.hw.init = &init;
 	th1520_div->ops = &clk_divider_ops;
 	th1520_div->sync_en = sync;
@@ -647,21 +647,21 @@ static struct clk *thead_clk_th1520_divider_internal(const char *name, const cha
 	return hw->clk;
 }
 
-struct clk *thead_clk_th1520_divider(const char *name, const char *parent,
+struct clk *xuantie_clk_th1520_divider(const char *name, const char *parent,
 				       void __iomem *reg, u8 shift, u8 width,
 				       u8 sync, enum th1520_div_type div_type,
 				       u16 min, u16 max)
 {
-	return thead_clk_th1520_divider_internal(name, parent, reg, shift, width,
+	return xuantie_clk_th1520_divider_internal(name, parent, reg, shift, width,
 											sync, div_type, min, max, false);
 }
 
-struct clk *thead_clk_th1520_divider_closest(const char *name, const char *parent,
+struct clk *xuantie_clk_th1520_divider_closest(const char *name, const char *parent,
 				       void __iomem *reg, u8 shift, u8 width,
 				       u8 sync, enum th1520_div_type div_type,
 				       u16 min, u16 max)
 {
-	return thead_clk_th1520_divider_internal(name, parent, reg, shift, width,
+	return xuantie_clk_th1520_divider_internal(name, parent, reg, shift, width,
 											sync, div_type, min, max, true);
 }
 
@@ -726,7 +726,7 @@ static const struct clk_ops clk_th1520gate_share_ops = {
 	.is_enabled = clk_th1520_gate_share_is_enabled,
 };
 
-struct clk *thead_clk_th1520_register_gate_shared(const char *name, const char *parent,
+struct clk *xuantie_clk_th1520_register_gate_shared(const char *name, const char *parent,
 						 unsigned long flags, void __iomem *reg,
 						 u8 shift, spinlock_t *lock,
 						 unsigned int *share_count)

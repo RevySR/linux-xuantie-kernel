@@ -3,13 +3,13 @@
  * Copyright (C) 2021 Alibaba Group Holding Limited.
  */
 
-#ifndef __MACH_THEAD_CLK_H
-#define __MACH_THEAD_CLK_H
+#ifndef __MACH_XUANTIE_CLK_H
+#define __MACH_XUANTIE_CLK_H
 
 #include <linux/spinlock.h>
 #include <linux/clk-provider.h>
 
-extern spinlock_t thead_th1520_clk_lock;
+extern spinlock_t xuantie_th1520_clk_lock;
 
 #define TH1520_PLL_RATE(_vco, _rate, _r, _b, _f, _p, _k)	\
 	{						\
@@ -62,30 +62,30 @@ struct th1520_pll_clk {
 	int flags;
 };
 
-static inline struct clk *thead_th1520_clk_fixed_factor(const char *name,
+static inline struct clk *xuantie_th1520_clk_fixed_factor(const char *name,
 		const char *parent, unsigned int mult, unsigned int div)
 {
 	return clk_register_fixed_factor(NULL, name, parent,
 			CLK_SET_RATE_PARENT, mult, div);
 }
 
-struct clk *thead_th1520_pll(const char *name, const char *parent_name,
+struct clk *xuantie_th1520_pll(const char *name, const char *parent_name,
 			    void __iomem *base,
 			    const struct th1520_pll_clk *pll_clk);
 
-static inline struct clk *thead_clk_th1520_gate(const char *name, const char *parent,
+static inline struct clk *xuantie_clk_th1520_gate(const char *name, const char *parent,
 					       void __iomem *reg, u8 shift)
 {
 	return clk_register_gate(NULL, name, parent, CLK_SET_RATE_PARENT, reg,
-			shift, 0, &thead_th1520_clk_lock);
+			shift, 0, &xuantie_th1520_clk_lock);
 }
 
-struct clk *thead_clk_th1520_register_gate_shared(const char *name, const char *parent,
+struct clk *xuantie_clk_th1520_register_gate_shared(const char *name, const char *parent,
 						 unsigned long flags, void __iomem *reg,
 						 u8 shift, spinlock_t *lock,
 						 unsigned int *share_count);
 
-struct clk *thead_clk_th1520_divider(const char *name, const char *parent,
+struct clk *xuantie_clk_th1520_divider(const char *name, const char *parent,
 				    void __iomem *reg, u8 shift, u8 width,
 				    u8 sync, enum th1520_div_type div_type,
 				    u16 min, u16 max);
@@ -94,33 +94,33 @@ struct clk *thead_clk_th1520_divider(const char *name, const char *parent,
 * By default, the clk framework calculates frequency by rounding downwards.
 * This function is to achieve closest frequency.
 */
-struct clk *thead_clk_th1520_divider_closest(const char *name, const char *parent,
+struct clk *xuantie_clk_th1520_divider_closest(const char *name, const char *parent,
 				    void __iomem *reg, u8 shift, u8 width,
 				    u8 sync, enum th1520_div_type div_type,
 				    u16 min, u16 max);
 
-void thead_unregister_clocks(struct clk *clks[], unsigned int count);
+void xuantie_unregister_clocks(struct clk *clks[], unsigned int count);
 
-static inline struct clk *thead_clk_fixed(const char *name, unsigned long rate)
+static inline struct clk *xuantie_clk_fixed(const char *name, unsigned long rate)
 {
 	return clk_register_fixed_rate(NULL, name, NULL, 0, rate);
 }
 
-static inline struct clk *thead_clk_th1520_gate_shared(const char *name, const char *parent,
+static inline struct clk *xuantie_clk_th1520_gate_shared(const char *name, const char *parent,
 					void __iomem *reg, u8 shift,
 					unsigned int *share_count)
 {
-	return thead_clk_th1520_register_gate_shared(name, parent, CLK_SET_RATE_PARENT, reg,
-						    shift, &thead_th1520_clk_lock, share_count);
+	return xuantie_clk_th1520_register_gate_shared(name, parent, CLK_SET_RATE_PARENT, reg,
+						    shift, &xuantie_th1520_clk_lock, share_count);
 }
 
-static inline struct clk *thead_th1520_clk_mux_flags(const char *name,
+static inline struct clk *xuantie_th1520_clk_mux_flags(const char *name,
 			void __iomem *reg, u8 shift, u8 width,
 			const char * const *parents, int num_parents,
 			unsigned long flags)
 {
 	return clk_register_mux(NULL, name, parents, num_parents,
 			flags , reg, shift, width, 0,
-			&thead_th1520_clk_lock);
+			&xuantie_th1520_clk_lock);
 }
 #endif

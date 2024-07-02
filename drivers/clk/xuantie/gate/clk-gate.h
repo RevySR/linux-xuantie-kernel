@@ -14,7 +14,7 @@ enum clk_gate_type {
 	GATE_SHARED,
 };
 
-struct thead_clk_gate {
+struct xuantie_clk_gate {
 	struct clk_hw hw;
 	struct regmap *regmap;
 	u32 offset;
@@ -23,7 +23,7 @@ struct thead_clk_gate {
 	u32 *share_count;
 };
 
-struct clk *thead_gate_clk_register(const char *name,
+struct clk *xuantie_gate_clk_register(const char *name,
 				    const char *parent_name,
 				    struct regmap *regmap,
 				    int offset,

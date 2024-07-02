@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 
-config THEAD_CLK
+config XUANTIE_CLK
 	bool
 	def_bool ARCH_XUANTIE
 

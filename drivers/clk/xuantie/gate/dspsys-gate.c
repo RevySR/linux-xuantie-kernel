@@ -23,7 +23,7 @@ static struct clk_onecell_data clk_gate_data;
 static const char * const dsp0_cclk_sels[] = {"gmac_pll_foutpostdiv", "dspsys_dsp_clk"};
 static const char * const dsp1_cclk_sels[] = {"gmac_pll_foutpostdiv", "dspsys_dsp_clk"};
 
-static int thead_dspsys_clk_probe(struct platform_device *pdev)
+static int xuantie_dspsys_clk_probe(struct platform_device *pdev)
 {
 	struct regmap *dspsys_regmap, *tee_dspsys_regmap;
 	struct device *dev = &pdev->dev;
@@ -45,43 +45,43 @@ static int thead_dspsys_clk_probe(struct platform_device *pdev)
 	}
 	gate_base = of_iomap(np_reg,0);
 	// MUX 
-	gates[DSPSYS_DSP0_CLK_SWITCH] = thead_th1520_clk_mux_flags("dspsys_dsp0_clk_switch", gate_base + 0x1c, 0, 1, dsp0_cclk_sels, ARRAY_SIZE(dsp0_cclk_sels), 0);
-	gates[DSPSYS_DSP1_CLK_SWITCH] = thead_th1520_clk_mux_flags("dspsys_dsp1_clk_switch", gate_base + 0x20, 0, 1, dsp1_cclk_sels, ARRAY_SIZE(dsp1_cclk_sels), 0);
+	gates[DSPSYS_DSP0_CLK_SWITCH] = xuantie_th1520_clk_mux_flags("dspsys_dsp0_clk_switch", gate_base + 0x1c, 0, 1, dsp0_cclk_sels, ARRAY_SIZE(dsp0_cclk_sels), 0);
+	gates[DSPSYS_DSP1_CLK_SWITCH] = xuantie_th1520_clk_mux_flags("dspsys_dsp1_clk_switch", gate_base + 0x20, 0, 1, dsp1_cclk_sels, ARRAY_SIZE(dsp1_cclk_sels), 0);
 
 	// DIV & CDE
-	gates[DSPSYS_DSP_CLK] = thead_th1520_clk_fixed_factor("dspsys_dsp_clk", "video_pll_foutvco", 1, 3);
-	gates[DSPSYS_DSP0_CLK_CDE] = thead_clk_th1520_divider("dspsys_dsp0_clk_cde", "dspsys_dsp0_clk_switch", gate_base + 0x0, 0, 3, 4, MUX_TYPE_CDE, 0, 7);
-	gates[DSPSYS_DSP1_CLK_CDE] = thead_clk_th1520_divider("dspsys_dsp1_clk_cde", "dspsys_dsp1_clk_switch", gate_base + 0x4, 0, 3, 4, MUX_TYPE_CDE, 0, 7);
+	gates[DSPSYS_DSP_CLK] = xuantie_th1520_clk_fixed_factor("dspsys_dsp_clk", "video_pll_foutvco", 1, 3);
+	gates[DSPSYS_DSP0_CLK_CDE] = xuantie_clk_th1520_divider("dspsys_dsp0_clk_cde", "dspsys_dsp0_clk_switch", gate_base + 0x0, 0, 3, 4, MUX_TYPE_CDE, 0, 7);
+	gates[DSPSYS_DSP1_CLK_CDE] = xuantie_clk_th1520_divider("dspsys_dsp1_clk_cde", "dspsys_dsp1_clk_switch", gate_base + 0x4, 0, 3, 4, MUX_TYPE_CDE, 0, 7);
 
 	// gate
-	gates[CLKGEN_DSP0_PCLK] = thead_gate_clk_register("clkgen_dsp0_pclk", NULL, dspsys_regmap,
+	gates[CLKGEN_DSP0_PCLK] = xuantie_gate_clk_register("clkgen_dsp0_pclk", NULL, dspsys_regmap,
 							  0x24, 0, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_DSP1_PCLK] = thead_gate_clk_register("clkgen_dsp1_pclk", NULL, dspsys_regmap,
+	gates[CLKGEN_DSP1_PCLK] = xuantie_gate_clk_register("clkgen_dsp1_pclk", NULL, dspsys_regmap,
 							  0x24, 1, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_DSP1_CCLK] = thead_gate_clk_register("clkgen_dsp1_cclk", "dspsys_dsp1_clk_cde", dspsys_regmap,
+	gates[CLKGEN_DSP1_CCLK] = xuantie_gate_clk_register("clkgen_dsp1_cclk", "dspsys_dsp1_clk_cde", dspsys_regmap,
 							  0x24, 2, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_DSP0_CCLK] = thead_gate_clk_register("clkgen_dsp0_cclk", "dspsys_dsp0_clk_cde", dspsys_regmap,
+	gates[CLKGEN_DSP0_CCLK] = xuantie_gate_clk_register("clkgen_dsp0_cclk", "dspsys_dsp0_clk_cde", dspsys_regmap,
 							  0x24, 3, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_X2X_DSP2_ACLK_S] = thead_gate_clk_register("clkgen_x2x_dsp2_aclk_s", NULL, dspsys_regmap,
+	gates[CLKGEN_X2X_DSP2_ACLK_S] = xuantie_gate_clk_register("clkgen_x2x_dsp2_aclk_s", NULL, dspsys_regmap,
 							  0x24, 4, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_X2X_DSP0_ACLK_S] = thead_gate_clk_register("clkgen_x2x_dsp0_aclk_s", NULL, dspsys_regmap,
+	gates[CLKGEN_X2X_DSP0_ACLK_S] = xuantie_gate_clk_register("clkgen_x2x_dsp0_aclk_s", NULL, dspsys_regmap,
 							  0x24, 5, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_X2X_X4_DSPSLV_DSP1_ACLK_M] = thead_gate_clk_register("clkgen_x2x_x4_dspslv_dsp1_aclk_m",
+	gates[CLKGEN_X2X_X4_DSPSLV_DSP1_ACLK_M] = xuantie_gate_clk_register("clkgen_x2x_x4_dspslv_dsp1_aclk_m",
 							  NULL, dspsys_regmap, 0x24, 6, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_X2X_X4_DSPSLV_DSP0_ACLK_M] = thead_gate_clk_register("clkgen_x2x_x4_dspslv_dsp0_aclk_m",
+	gates[CLKGEN_X2X_X4_DSPSLV_DSP0_ACLK_M] = xuantie_gate_clk_register("clkgen_x2x_x4_dspslv_dsp0_aclk_m",
 							  NULL, dspsys_regmap, 0x24, 7, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_AXI4_DSPSYS_SLV_ACLK] = thead_gate_clk_register("clkgen_axi4_dspsys_slv_aclk", NULL, dspsys_regmap,
+	gates[CLKGEN_AXI4_DSPSYS_SLV_ACLK] = xuantie_gate_clk_register("clkgen_axi4_dspsys_slv_aclk", NULL, dspsys_regmap,
 							  0x24, 20, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_AXI4_DSPSYS_SLV_PCLK] = thead_gate_clk_register("clkgen_axi4_dspsys_slv_pclk", NULL, dspsys_regmap,
+	gates[CLKGEN_AXI4_DSPSYS_SLV_PCLK] = xuantie_gate_clk_register("clkgen_axi4_dspsys_slv_pclk", NULL, dspsys_regmap,
 							  0x24, 21, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_AXI4_DSPSYS_ACLK] = thead_gate_clk_register("clkgen_axi4_dspsys_aclk", NULL, dspsys_regmap,
+	gates[CLKGEN_AXI4_DSPSYS_ACLK] = xuantie_gate_clk_register("clkgen_axi4_dspsys_aclk", NULL, dspsys_regmap,
 							  0x24, 23, GATE_NOT_SHARED, NULL, dev);
-	gates[CLKGEN_AXI4_DSPSYS_PCLK] = thead_gate_clk_register("clkgen_axi4_dspsys_pclk", NULL, dspsys_regmap,
+	gates[CLKGEN_AXI4_DSPSYS_PCLK] = xuantie_gate_clk_register("clkgen_axi4_dspsys_pclk", NULL, dspsys_regmap,
 							  0x24, 24, GATE_NOT_SHARED, NULL, dev);
 	if (tee_dspsys_regmap) {
-		gates[CLKGEN_IOPMP_DSP1_PCLK] = thead_gate_clk_register("clkgen_iopmp_dsp1_pclk", NULL, tee_dspsys_regmap,
+		gates[CLKGEN_IOPMP_DSP1_PCLK] = xuantie_gate_clk_register("clkgen_iopmp_dsp1_pclk", NULL, tee_dspsys_regmap,
 							  0x24, 25, GATE_NOT_SHARED, NULL, dev);
-		gates[CLKGEN_IOPMP_DSP0_PCLK] = thead_gate_clk_register("clkgen_iopmp_dsp0_pclk", NULL, tee_dspsys_regmap,
+		gates[CLKGEN_IOPMP_DSP0_PCLK] = xuantie_gate_clk_register("clkgen_iopmp_dsp0_pclk", NULL, tee_dspsys_regmap,
 							  0x24, 26, GATE_NOT_SHARED, NULL, dev);
 	}
 
@@ -99,25 +99,25 @@ static int thead_dspsys_clk_probe(struct platform_device *pdev)
 	return 0;
 
 unregister_clks:
-	thead_unregister_clocks(gates, ARRAY_SIZE(gates));
+	xuantie_unregister_clocks(gates, ARRAY_SIZE(gates));
 	return ret;
 }
 
 static const struct of_device_id dspsys_clk_gate_of_match[] = {
-	{ .compatible = "thead,dspsys-gate-controller" },
+	{ .compatible = "xuantie,dspsys-gate-controller" },
 	{ /* sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, dspsys_clk_gate_of_match);
 
-static struct platform_driver thead_dspsys_clk_driver = {
-	.probe = thead_dspsys_clk_probe,
+static struct platform_driver xuantie_dspsys_clk_driver = {
+	.probe = xuantie_dspsys_clk_probe,
 	.driver = {
 		.name = "dspsys-clk-gate-provider",
 		.of_match_table = of_match_ptr(dspsys_clk_gate_of_match),
 	},
 };
 
-module_platform_driver(thead_dspsys_clk_driver);
+module_platform_driver(xuantie_dspsys_clk_driver);
 MODULE_AUTHOR("wei.liu <lw312886@linux.alibaba.com>");
 MODULE_DESCRIPTION("Thead Th1520 Fullmask dspsys clock gate provider");
 MODULE_LICENSE("GPL v2");

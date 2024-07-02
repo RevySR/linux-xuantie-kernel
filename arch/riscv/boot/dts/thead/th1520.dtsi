@@ -1272,7 +1272,7 @@
 		};
 
 		clk: clock-controller@ffef010000 {
-			compatible = "thead,th1520-fm-ree-clk";
+			compatible = "xuantie,th1520-fm-ree-clk";
 			reg = <0xff 0xef010000 0x0 0x1000>;
 			#clock-cells = <1>;
 			clocks = <&osc_32k>, <&osc>, <&rc_24m>;
@@ -1281,42 +1281,42 @@
 		};
 
 		visys_clk_gate: visys-clk-gate { /* VI_SYSREG_R */
-			compatible = "thead,visys-gate-controller";
+			compatible = "xuantie,visys-gate-controller";
 			visys-regmap = <&visys_reg>;
 			#clock-cells = <1>;
 			status = "okay";
 		};
 
 		vpsys_clk_gate: vpsys-clk-gate@ffecc30000 { /* VP_SYSREG_R */
-			compatible = "thead,vpsys-gate-controller";
+			compatible = "xuantie,vpsys-gate-controller";
 			reg = <0xff 0xecc30000 0x0 0x1000>;
 			#clock-cells = <1>;
 			status = "okay";
 		};
 
 		vosys_clk_gate: vosys-clk-gate@ffef528000 { /* VO_SYSREG_R */
-			compatible = "thead,vosys-gate-controller";
+			compatible = "xuantie,vosys-gate-controller";
 			reg = <0xff 0xef528000 0x0 0x1000>;
 			#clock-cells = <1>;
 			status = "okay";
 		};
 
 		dspsys_clk_gate: dspsys-clk-gate {
-			compatible = "thead,dspsys-gate-controller";
+			compatible = "xuantie,dspsys-gate-controller";
 			dspsys-regmap = <&dspsys_reg>;
 			#clock-cells = <1>;
 			status = "okay";
 		};
 
 		audiosys_clk_gate: audiosys-clk-gate {
-			compatible = "thead,audiosys-gate-controller";
+			compatible = "xuantie,audiosys-gate-controller";
 			audiosys-regmap = <&audio_cpr>;
 			#clock-cells = <1>;
 			status = "okay";
 		};
 
 		miscsys_clk_gate: miscsys-clk-gate {
-			compatible = "thead,miscsys-gate-controller";
+			compatible = "xuantie,miscsys-gate-controller";
 			miscsys-regmap = <&miscsys_reg>;
 			tee-miscsys-regmap = <&tee_miscsys_reg>;
 			#clock-cells = <1>;
